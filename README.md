@@ -1,8 +1,16 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Config
+
+You can set server base url in src/config.ts
+
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm run mock-api`
+
+Runs Prism server with fake data based on travelist.yml
 
 ### `npm start`
 

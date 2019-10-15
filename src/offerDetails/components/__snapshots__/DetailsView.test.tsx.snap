@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DetailsListView should render correctly 1`] = `
+<div>
+  <styled.h1>
+    title
+  </styled.h1>
+  <styled.img
+    src="image_url"
+  />
+  <styled.span>
+    description
+  </styled.span>
+  <styled.div>
+    <styled.div>
+      Cena:
+      100
+    </styled.div>
+  </styled.div>
+</div>
+`;

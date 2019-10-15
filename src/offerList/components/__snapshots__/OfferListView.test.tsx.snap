@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OfferListView should render correctly 1`] = `
+<styled.div>
+  <InfinityScroll
+    hasMore={true}
+    loadMore={[MockFunction]}
+  >
+    <styled.div
+      key="1"
+      onClick={[Function]}
+    >
+      <styled.img
+        alt="offer"
+        src="image_url"
+      />
+      <styled.div>
+        title
+      </styled.div>
+      <styled.div>
+        description
+      </styled.div>
+      <styled.div>
+        100
+      </styled.div>
+    </styled.div>
+  </InfinityScroll>
+</styled.div>
+`;

@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'App.css';
+
+import { initAppStore } from 'core/store';
+import React, { lazy } from 'react';
+import { Provider } from 'react-redux';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import styled from 'styled-components';
+import { withSuspense } from 'utils/withSuspense';
+
+const OfferList = lazy(() => import('./offerList'));
+const OfferDetails = lazy(() => import('./offerDetails'));
+
+const store = initAppStore();
+
+const Layout = styled.div`
+  max-width: 800px;
+  margin: auto;
+`;
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Provider store={store}>
+        <Router>
+          <Switch>
+            <Route exact path='/' component={withSuspense(OfferList)} />
+            <Route
+              exact
+              path='/details/:offerId'
+              component={withSuspense(OfferDetails)}
+            />
+          </Switch>
+        </Router>
+      </Provider>
+    </Layout>
   );
-}
+};
 
 export default App;

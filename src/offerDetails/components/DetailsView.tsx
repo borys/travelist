@@ -12,15 +12,17 @@ import {
 
 export interface DetailsViewProps {
   offer: Offer | null;
+  goBack: () => void;
 }
 
-export function DetailsView({ offer }: DetailsViewProps) {
+export function DetailsView({ offer, goBack }: DetailsViewProps) {
   if (!offer) {
     return <EmptyState>Select offer to view</EmptyState>;
   }
 
   return (
     <div>
+      <button onClick={(e) => goBack()}>Go back</button>
       <Title>{offer.title}</Title>
       <Image src={offer.img_url} />
       <Description>{offer.description}</Description>

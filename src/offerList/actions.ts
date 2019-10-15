@@ -47,8 +47,12 @@ export const fetchMoreOffers = (): ThunkAction<
 
       if (res.ok) {
         const data = await res.json();
-        const totalCount = parseInt(res.headers.get('X-Total-Limit') || '');
-        const hasMore = offset + limit < totalCount ? true : false;
+        const totalCount = parseInt(res.headers.get('x-total-count') || '');
+        let hasMore = true;
+
+        if (process.env.NODE_ENV === 'production') {
+          hasMore = offset + limit < totalCount ? true : false;
+        }
 
         dispatch(fetchMoreOffersSuccess(data, offset + limit, limit, hasMore));
       } else {

@@ -134,14 +134,17 @@ paths:
             X-Limit: &XLimit
               type: 'integer'
               minimum: 1
+              maximum: 20
               description: 'Limit of results used in query'
             X-Offset: &XOffset
               type: 'integer'
               minimum: 0
+              maximum: 100
               description: 'Offset of results used in query'
             X-Total-Count: &XTotalCount
               type: 'integer'
-              minimum: 0
+              minimum: 1000
+              maximum: 1000
               description: 'Total records'
 
   /offers/{offer_id}:

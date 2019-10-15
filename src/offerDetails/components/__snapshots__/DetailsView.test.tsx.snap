@@ -2,6 +2,11 @@
 
 exports[`DetailsListView should render correctly 1`] = `
 <div>
+  <button
+    onClick={[Function]}
+  >
+    Go back
+  </button>
   <styled.h1>
     title
   </styled.h1>

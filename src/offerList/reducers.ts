@@ -6,6 +6,7 @@ import {
   FETCH_MORE_OFFERS,
   FETCH_MORE_OFFERS_FAIL,
   FETCH_MORE_OFFERS_SUCCESS,
+  SAVE_OFFER_LIST_SCROLL,
 } from './actions';
 
 export interface OfferListState {
@@ -14,6 +15,7 @@ export interface OfferListState {
   offset: number;
   limit: number;
   data: Offer[];
+  scrollTop: number;
 }
 
 export const initState: OfferListState = {
@@ -22,6 +24,7 @@ export const initState: OfferListState = {
   offset: 0,
   limit: config.perPage,
   data: [],
+  scrollTop: 0,
 };
 
 export default function offerListReducer(
@@ -51,6 +54,11 @@ export default function offerListReducer(
         hasMore: action.hasMore,
         data: state.data.concat(action.data),
         loading: false,
+      };
+    case SAVE_OFFER_LIST_SCROLL:
+      return {
+        ...state,
+        scrollTop: action.scrollTop,
       };
     default:
       return state;

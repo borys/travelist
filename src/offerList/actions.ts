@@ -8,6 +8,8 @@ export const FETCH_MORE_OFFERS = 'FETCH_OFFER_LIST';
 export const FETCH_MORE_OFFERS_SUCCESS = 'FETCH_MORE_OFFERS_SUCCESS';
 export const FETCH_MORE_OFFERS_FAIL = 'FETCH_MORE_OFFERS_FAIL';
 
+export const SAVE_OFFER_LIST_SCROLL = 'SAVE_OFFER_LIST_SCROLL';
+
 export const fetchMoreOffersSuccess = (
   data: Offer[],
   offset: number,
@@ -63,3 +65,8 @@ export const fetchMoreOffers = (): ThunkAction<
     }
   };
 };
+
+export const saveOfferListScroll = (scrollTop: number) => ({
+  type: SAVE_OFFER_LIST_SCROLL,
+  scrollTop,
+});

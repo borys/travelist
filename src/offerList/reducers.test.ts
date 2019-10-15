@@ -2,6 +2,7 @@ import {
   FETCH_MORE_OFFERS,
   FETCH_MORE_OFFERS_FAIL,
   FETCH_MORE_OFFERS_SUCCESS,
+  SAVE_OFFER_LIST_SCROLL,
 } from './actions';
 import offerListReducer, { OfferListState } from './reducers';
 
@@ -42,5 +43,15 @@ describe('OfferList reducers', () => {
     });
 
     expect(result.loading).toBe(false);
+  });
+
+  it('should set scrollTop', () => {
+    const scrollTop = 10;
+    const result = offerListReducer(initState, {
+      type: SAVE_OFFER_LIST_SCROLL,
+      scrollTop,
+    });
+
+    expect(result.scrollTop).toBe(scrollTop);
   });
 });

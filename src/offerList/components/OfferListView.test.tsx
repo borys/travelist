@@ -30,6 +30,7 @@ describe('OfferListView', () => {
         loadMore={loadMoreCb}
         hasMore={true}
         onItemClick={clickCb}
+        scrollTop={0}
       />
     );
   });

@@ -8,9 +8,11 @@ import {
   FETCH_MORE_OFFERS,
   FETCH_MORE_OFFERS_FAIL,
   FETCH_MORE_OFFERS_SUCCESS,
+  SAVE_OFFER_LIST_SCROLL,
   fetchMoreOffers,
   fetchMoreOffersFail,
   fetchMoreOffersSuccess,
+  saveOfferListScroll,
 } from './actions';
 
 const middlewares = [thunk];
@@ -99,5 +101,15 @@ describe('OfferList actions', () => {
     return store.dispatch(fetchMoreOffers()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
+  });
+
+  it('should create save scroll action', () => {
+    const scrollTop = 10;
+    const expectedAction = {
+      type: SAVE_OFFER_LIST_SCROLL,
+      scrollTop,
+    };
+
+    expect(saveOfferListScroll(scrollTop)).toEqual(expectedAction);
   });
 });

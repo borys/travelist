@@ -2,7 +2,6 @@ import {
   FETCH_MORE_OFFERS,
   FETCH_MORE_OFFERS_FAIL,
   FETCH_MORE_OFFERS_SUCCESS,
-  SAVE_OFFER_LIST_SCROLL,
 } from './actions';
 import offerListReducer, { OfferListState } from './reducers';
 
@@ -10,7 +9,7 @@ describe('OfferList reducers', () => {
   const initState: OfferListState = {
     loading: false,
     hasMore: true,
-    offset: 0,
+    nextOffset: 0,
     limit: 5,
     data: [],
   };
@@ -24,14 +23,14 @@ describe('OfferList reducers', () => {
   it('should update store on success', () => {
     const result = offerListReducer(initState, {
       type: FETCH_MORE_OFFERS_SUCCESS,
-      offset: 10,
+      nextOffset: 10,
       limit: 20,
       hasMore: false,
       data: [{}],
     });
 
     expect(result.loading).toBe(false);
-    expect(result.offset).toBe(10);
+    expect(result.nextOffset).toBe(10);
     expect(result.limit).toBe(20);
     expect(result.hasMore).toBe(false);
     expect(result.data).toEqual([{}]);
@@ -43,15 +42,5 @@ describe('OfferList reducers', () => {
     });
 
     expect(result.loading).toBe(false);
-  });
-
-  it('should set scrollTop', () => {
-    const scrollTop = 10;
-    const result = offerListReducer(initState, {
-      type: SAVE_OFFER_LIST_SCROLL,
-      scrollTop,
-    });
-
-    expect(result.scrollTop).toBe(scrollTop);
   });
 });

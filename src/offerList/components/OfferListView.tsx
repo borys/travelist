@@ -9,7 +9,7 @@ export interface OfferListViewProps {
   loadMore: () => void;
   hasMore: boolean;
   onItemClick: (id: OfferId, position: number) => void;
-  scrollTop: number;
+  scrollPosition: number;
 }
 
 export const OfferListView: React.FC<OfferListViewProps> = ({
@@ -17,7 +17,7 @@ export const OfferListView: React.FC<OfferListViewProps> = ({
   loadMore,
   hasMore,
   onItemClick,
-  scrollTop,
+  scrollPosition,
 }: React.PropsWithChildren<OfferListViewProps>) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const getScrollTop = () =>
@@ -26,7 +26,7 @@ export const OfferListView: React.FC<OfferListViewProps> = ({
   useEffect(() => {
     wrapperRef.current &&
       wrapperRef.current.scrollTo &&
-      wrapperRef.current.scrollTo(0, scrollTop);
+      wrapperRef.current.scrollTo(0, scrollPosition);
   });
 
   return (

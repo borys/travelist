@@ -8,8 +8,6 @@ export const FETCH_MORE_OFFERS = 'FETCH_OFFER_LIST';
 export const FETCH_MORE_OFFERS_SUCCESS = 'FETCH_MORE_OFFERS_SUCCESS';
 export const FETCH_MORE_OFFERS_FAIL = 'FETCH_MORE_OFFERS_FAIL';
 
-export const SAVE_OFFER_LIST_SCROLL = 'SAVE_OFFER_LIST_SCROLL';
-
 export const fetchMoreOffersSuccess = (
   data: Offer[],
   offset: number,
@@ -34,7 +32,8 @@ export const fetchMoreOffers = (): ThunkAction<
 > => {
   return async (dispatch, getState) => {
     const state = getState();
-    const { limit, offset, loading } = state.offerList;
+    const { limit, loading } = state.offerList;
+    let nextOffset = state.offerList.nextOffset;
 
     if (loading) {
       return;
@@ -44,7 +43,7 @@ export const fetchMoreOffers = (): ThunkAction<
 
     try {
       const res = await fetch(
-        `${config.url}/offers?status=published&offset=${offset}&limit=${limit}`
+        `${config.url}/offers?status=published&offset=${nextOffset}&limit=${limit}`
       );
 
       if (res.ok) {
@@ -52,11 +51,13 @@ export const fetchMoreOffers = (): ThunkAction<
         const totalCount = parseInt(res.headers.get('x-total-count') || '');
         let hasMore = true;
 
+        nextOffset = nextOffset + limit;
+
         if (process.env.NODE_ENV === 'production') {
-          hasMore = offset + limit < totalCount ? true : false;
+          hasMore = nextOffset < totalCount ? true : false;
         }
 
-        dispatch(fetchMoreOffersSuccess(data, offset + limit, limit, hasMore));
+        dispatch(fetchMoreOffersSuccess(data, nextOffset, limit, hasMore));
       } else {
         dispatch(fetchMoreOffersFail());
       }
@@ -65,8 +66,3 @@ export const fetchMoreOffers = (): ThunkAction<
     }
   };
 };
-
-export const saveOfferListScroll = (scrollTop: number) => ({
-  type: SAVE_OFFER_LIST_SCROLL,
-  scrollTop,
-});

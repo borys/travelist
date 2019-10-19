@@ -1,6 +1,6 @@
 import config from 'config';
 import { Offer } from 'core/models';
-import { AnyAction } from 'redux';
+import { AnyAction, Reducer } from 'redux';
 
 import {
   FETCH_MORE_OFFERS,
@@ -24,10 +24,10 @@ export const initState: OfferListState = {
   data: [],
 };
 
-export default function offerListReducer(
+const offerListReducer: Reducer<OfferListState, AnyAction> = (
   state: OfferListState | undefined,
   action: AnyAction
-) {
+) => {
   if (state === undefined) {
     return initState;
   }
@@ -55,4 +55,6 @@ export default function offerListReducer(
     default:
       return state;
   }
-}
+};
+
+export default offerListReducer;

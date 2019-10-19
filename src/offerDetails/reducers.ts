@@ -1,5 +1,5 @@
 import { Offer } from 'core/models';
-import { AnyAction } from 'redux';
+import { AnyAction, Reducer } from 'redux';
 
 import {
   FETCH_OFFER_DETAILS,
@@ -17,10 +17,10 @@ export const initState: OfferDetailsState = {
   data: null,
 };
 
-export default function offerDetailsReducer(
+const offerDetailsReducer: Reducer<OfferDetailsState, AnyAction> = (
   state: OfferDetailsState | undefined,
   action: AnyAction
-) {
+) => {
   if (state === undefined) {
     return initState;
   }
@@ -45,4 +45,6 @@ export default function offerDetailsReducer(
     default:
       return state;
   }
-}
+};
+
+export default offerDetailsReducer;

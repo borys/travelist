@@ -15,7 +15,10 @@ export interface DetailsViewProps {
   goBack: () => void;
 }
 
-export function DetailsView({ offer, goBack }: DetailsViewProps) {
+export const DetailsView: React.FC<DetailsViewProps> = ({
+  offer,
+  goBack,
+}: DetailsViewProps) => {
   if (!offer) {
     return <EmptyState>Select offer to view</EmptyState>;
   }
@@ -34,4 +37,4 @@ export function DetailsView({ offer, goBack }: DetailsViewProps) {
       </Summary>
     </div>
   );
-}
+};

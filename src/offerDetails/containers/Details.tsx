@@ -8,7 +8,7 @@ import { useThunkDispatch } from 'utils/useThunkDispatch';
 
 import { DetailsView } from '../components/DetailsView';
 
-export function Details() {
+export const Details: React.FC = () => {
   const { offerId } = useParams();
   const dispatch = useThunkDispatch();
   const offer = useSelector((state: AppStore) => state.offerDetails.data);
@@ -19,4 +19,4 @@ export function Details() {
   }, [dispatch, offerId]);
 
   return <DetailsView goBack={() => history.goBack()} offer={offer} />;
-}
+};

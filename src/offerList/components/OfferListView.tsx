@@ -47,3 +47,5 @@ export const OfferListView: React.FC<OfferListViewProps> = ({
     </Wrapper>
   );
 };
+
+export const MemoizedOfferListView = React.memo(OfferListView);

@@ -1,12 +1,12 @@
 import { OfferId } from 'core/models';
 import { AppStore } from 'core/store';
 import { fetchMoreOffers } from 'offerList/actions';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useThunkDispatch } from 'utils/useThunkDispatch';
 
-import { OfferListView } from '../components/OfferListView';
+import { MemoizedOfferListView } from '../components/OfferListView';
 
 export const OfferList: React.FC = () => {
   const history = useHistory();
@@ -27,21 +27,24 @@ export const OfferList: React.FC = () => {
     // eslint-disable-next-line
   }, []);
 
-  const showDetails = (id: OfferId, scrollPosition: number) => {
-    history.replace(history.location.pathname, {
-      ...history.location.state,
-      scrollPosition,
-    });
+  const showDetails = useCallback(
+    (id: OfferId, scrollPosition: number) => {
+      history.replace(history.location.pathname, {
+        ...history.location.state,
+        scrollPosition,
+      });
 
-    history.push(`/details/${id}`);
-  };
+      history.push(`/details/${id}`);
+    },
+    [history]
+  );
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     thunkDispatch(fetchMoreOffers());
-  };
+  }, [thunkDispatch]);
 
   return (
-    <OfferListView
+    <MemoizedOfferListView
       offers={offers}
       onItemClick={showDetails}
       hasMore={hasMore}

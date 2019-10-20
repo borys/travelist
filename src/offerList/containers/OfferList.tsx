@@ -15,6 +15,7 @@ export const OfferList: React.FC = () => {
   const thunkDispatch = useThunkDispatch();
   let [scrollPosition, setScrollPosition] = useState(null);
 
+  // eslint-disable-next-line
   useEffect(() => {
     setScrollPosition(null);
   });
@@ -23,6 +24,7 @@ export const OfferList: React.FC = () => {
     if (history.location.state) {
       setScrollPosition(history.location.state.scrollPosition);
     }
+    // eslint-disable-next-line
   }, []);
 
   const showDetails = (id: OfferId, scrollPosition: number) => {

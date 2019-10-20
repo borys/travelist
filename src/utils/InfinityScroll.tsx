@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 type LoadMoreFunc = () => void;
 
@@ -7,17 +7,15 @@ export interface InfinityScrollProps {
   hasMore: boolean;
 }
 
-export const InfinityScroll: React.FC<InfinityScrollProps> = (
-  props: React.PropsWithChildren<InfinityScrollProps>
-) => {
-  const wrapperRef = React.useRef<HTMLDivElement>(null);
-  const { hasMore, loadMore } = props;
+export const InfinityScroll: React.FC<InfinityScrollProps> = ({
+  hasMore,
+  loadMore,
+  children,
+}: React.PropsWithChildren<InfinityScrollProps>) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    const getParent = (ref: React.RefObject<HTMLDivElement>) =>
-      ref.current && ref.current.parentElement;
-
-    const scrollHandler = (e: Event) => {
+  const scrollHandler = useCallback(
+    (e: Event) => {
       const wrapper = e.target as HTMLDivElement;
 
       if (
@@ -27,32 +25,47 @@ export const InfinityScroll: React.FC<InfinityScrollProps> = (
       ) {
         loadMore();
       }
-    };
+    },
+    [loadMore]
+  );
 
-    const fillView = (
-      parent: HTMLElement | null,
-      hasMore: boolean,
-      loadMore: LoadMoreFunc
-    ) => {
+  const getParent = useCallback(
+    (ref: React.RefObject<HTMLDivElement>) =>
+      ref.current && ref.current.parentElement,
+    []
+  );
+
+  const fillView = useCallback(
+    (parent: HTMLElement | null, hasMore: boolean, loadMore: LoadMoreFunc) => {
       if (parent && hasMore && parent.clientHeight === parent.scrollHeight) {
         loadMore();
       }
-    };
+    },
+    []
+  );
 
+  useEffect(() => {
     const parent = getParent(wrapperRef);
-    if (!parent) {
-      return;
-    }
 
-    parent.addEventListener('scroll', scrollHandler);
-    fillView(parent, hasMore, loadMore);
+    if (hasMore && loadMore && parent) {
+      parent.addEventListener('scroll', scrollHandler);
+    }
 
     return () => {
       if (parent) {
         parent.removeEventListener('scroll', scrollHandler);
       }
     };
-  }, [wrapperRef, loadMore, hasMore]);
 
-  return <div ref={wrapperRef}>{props.children}</div>;
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    const parent = getParent(wrapperRef);
+    if (parent) {
+      fillView(parent, hasMore, loadMore);
+    }
+  });
+
+  return <div ref={wrapperRef}>{children}</div>;
 };

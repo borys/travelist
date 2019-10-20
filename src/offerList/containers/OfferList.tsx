@@ -1,7 +1,7 @@
 import { OfferId } from 'core/models';
 import { AppStore } from 'core/store';
 import { fetchMoreOffers } from 'offerList/actions';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useThunkDispatch } from 'utils/useThunkDispatch';
@@ -13,9 +13,17 @@ export const OfferList: React.FC = () => {
   const offers = useSelector((state: AppStore) => state.offerList.data);
   const hasMore = useSelector((state: AppStore) => state.offerList.hasMore);
   const thunkDispatch = useThunkDispatch();
-  const scrollPosition = history.location.state
-    ? history.location.state.scrollPosition
-    : 0;
+  let [scrollPosition, setScrollPosition] = useState(null);
+
+  useEffect(() => {
+    setScrollPosition(null);
+  });
+
+  useEffect(() => {
+    if (history.location.state) {
+      setScrollPosition(history.location.state.scrollPosition);
+    }
+  }, []);
 
   const showDetails = (id: OfferId, scrollPosition: number) => {
     history.replace(history.location.pathname, {

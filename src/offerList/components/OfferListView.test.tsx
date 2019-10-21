@@ -30,7 +30,7 @@ describe('OfferListView', () => {
         loadMore={loadMoreCb}
         hasMore={true}
         onItemClick={clickCb}
-        scrollPosition={0}
+        initScrollPosition={0}
       />
     );
   });

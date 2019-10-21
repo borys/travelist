@@ -9,7 +9,7 @@ export interface OfferListViewProps {
   loadMore: () => void;
   hasMore: boolean;
   onItemClick: (id: OfferId, position: number) => void;
-  scrollPosition: number | null;
+  initScrollPosition: number | null;
 }
 
 export const OfferListView: React.FC<OfferListViewProps> = ({
@@ -17,18 +17,19 @@ export const OfferListView: React.FC<OfferListViewProps> = ({
   loadMore,
   hasMore,
   onItemClick,
-  scrollPosition,
+  initScrollPosition,
 }: React.PropsWithChildren<OfferListViewProps>) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const getScrollTop = () =>
     wrapperRef.current ? wrapperRef.current.scrollTop : 0;
 
   useEffect(() => {
-    scrollPosition &&
+    initScrollPosition &&
       wrapperRef.current &&
       wrapperRef.current.scrollTo &&
-      wrapperRef.current.scrollTo(0, scrollPosition);
-  });
+      wrapperRef.current.scrollTo(0, initScrollPosition);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Wrapper ref={wrapperRef}>

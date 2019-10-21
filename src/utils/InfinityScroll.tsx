@@ -56,7 +56,7 @@ export const InfinityScroll: React.FC<InfinityScrollProps> = ({
     if (parent) {
       fillView(parent, hasMore, loadMore);
     }
-  });
+  }, [children, hasMore, loadMore]);
 
   return <div ref={wrapperRef}>{children}</div>;
 };

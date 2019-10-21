@@ -38,3 +38,5 @@ export const DetailsView: React.FC<DetailsViewProps> = ({
     </div>
   );
 };
+
+export const MemoizedDetailsView = React.memo(DetailsView);

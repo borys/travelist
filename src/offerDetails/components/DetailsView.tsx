@@ -27,8 +27,8 @@ export const DetailsView: React.FC<DetailsViewProps> = ({
     <div>
       <button onClick={(e) => goBack()}>Go back</button>
       <Title>{offer.title}</Title>
-      {/* <Image src={offer.img_url} /> */}
-      <Image src={''} />
+      <Image src={offer.img_url} />
+      {/* <Image src={''} /> */}
       <Description>{offer.description}</Description>
       <Summary>
         <Price>

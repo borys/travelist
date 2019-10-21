@@ -23,7 +23,7 @@ describe('OfferList reducers', () => {
   it('should update store on success', () => {
     const result = offerListReducer(initState, {
       type: FETCH_MORE_OFFERS_SUCCESS,
-      nextOffset: 10,
+      offset: 10,
       limit: 20,
       hasMore: false,
       data: [{}],

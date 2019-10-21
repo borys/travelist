@@ -28,8 +28,6 @@ export const InfinityScroll: React.FC<InfinityScrollProps> = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log('use effect');
-
     const scrollHandler = (e: Event) => {
       const wrapper = e.target as HTMLDivElement;
 

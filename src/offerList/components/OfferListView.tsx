@@ -36,7 +36,8 @@ export const OfferListView: React.FC<OfferListViewProps> = ({
         {offers.map(({ id, img_url, title, price, description }) => {
           return (
             <Item key={id} onClick={() => onItemClick(id, getScrollTop())}>
-              <Image src={img_url} alt='offer' />
+              {/* <Image src={img_url} alt='offer' /> */}
+              <Image src={''} alt='offer' />
               <Title>{title}</Title>
               <Description>{description}</Description>
               <Price>{price}</Price>

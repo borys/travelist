@@ -24,8 +24,7 @@ export const OfferList: React.FC = () => {
     if (history.location.state) {
       setScrollPosition(history.location.state.scrollPosition);
     }
-    // eslint-disable-next-line
-  }, []);
+  }, [setScrollPosition, history]);
 
   const showDetails = useCallback(
     (id: OfferId, scrollPosition: number) => {

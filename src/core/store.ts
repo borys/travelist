@@ -17,7 +17,7 @@ export interface AppStore {
 }
 
 export const initAppStore = () => {
-  let middleware = [thunk];
+  const middleware = [thunk];
 
   const initState: AppStore = {
     offerDetails: offerDetailsInitState,
@@ -29,9 +29,10 @@ export const initAppStore = () => {
     offerList: offerListReducer,
   });
 
-  return createStore(
-    reducers,
-    initState,
-    composeWithDevTools(applyMiddleware(...middleware))
-  );
+  let appliedMiddlewares = applyMiddleware(...middleware);
+  if (process.env.NODE_ENV !== 'production') {
+    appliedMiddlewares = composeWithDevTools(appliedMiddlewares);
+  }
+
+  return createStore(reducers, initState, appliedMiddlewares);
 };

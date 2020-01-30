@@ -17,6 +17,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.4.0",
+    "typesafe-actions": "^4.4.2",
     "typescript": "3.6.4"
   },
   "scripts": {

@@ -15,7 +15,10 @@ export interface DetailsViewProps {
   goBack: () => void;
 }
 
-export function DetailsView({ offer, goBack }: DetailsViewProps) {
+export const DetailsView: React.FC<DetailsViewProps> = ({
+  offer,
+  goBack,
+}: DetailsViewProps) => {
   if (!offer) {
     return <EmptyState>Select offer to view</EmptyState>;
   }
@@ -25,6 +28,7 @@ export function DetailsView({ offer, goBack }: DetailsViewProps) {
       <button onClick={(e) => goBack()}>Go back</button>
       <Title>{offer.title}</Title>
       <Image src={offer.img_url} />
+      {/* <Image src={''} /> */}
       <Description>{offer.description}</Description>
       <Summary>
         <Price>
@@ -34,4 +38,6 @@ export function DetailsView({ offer, goBack }: DetailsViewProps) {
       </Summary>
     </div>
   );
-}
+};
+
+export const MemoizedDetailsView = React.memo(DetailsView);

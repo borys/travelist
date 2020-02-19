@@ -22,7 +22,7 @@ describe('DetailsListView', () => {
   };
 
   beforeEach(() => {
-    component = shallow(<DetailsView offer={offer} />);
+    component = shallow(<DetailsView goBack={() => true} offer={offer} />);
   });
 
   it('should render correctly', () => {

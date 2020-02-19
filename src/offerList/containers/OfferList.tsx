@@ -1,37 +1,44 @@
 import { OfferId } from 'core/models';
 import { AppStore } from 'core/store';
-import { fetchMoreOffers, saveOfferListScroll } from 'offerList/actions';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { fetchMoreOffers } from 'offerList/actions';
+import React, { useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useThunkDispatch } from 'utils/useThunkDispatch';
 
-import { OfferListView } from '../components/OfferListView';
+import { MemoizedOfferListView } from '../components/OfferListView';
 
 export const OfferList: React.FC = () => {
   const history = useHistory();
   const offers = useSelector((state: AppStore) => state.offerList.data);
   const hasMore = useSelector((state: AppStore) => state.offerList.hasMore);
-  const scrollTop = useSelector((state: AppStore) => state.offerList.scrollTop);
   const thunkDispatch = useThunkDispatch();
-  const dispatch = useDispatch();
 
-  const showDetails = (id: OfferId, scrollTop: number) => {
-    dispatch(saveOfferListScroll(scrollTop));
-    history.push(`/details/${id}`);
-  };
+  const showDetails = useCallback(
+    (id: OfferId, scrollPosition: number) => {
+      history.replace(history.location.pathname, {
+        ...history.location.state,
+        scrollPosition,
+      });
 
-  const loadMore = () => {
+      history.push(`/details/${id}`);
+    },
+    [history]
+  );
+
+  const loadMore = useCallback(() => {
     thunkDispatch(fetchMoreOffers());
-  };
+  }, [thunkDispatch]);
 
   return (
-    <OfferListView
+    <MemoizedOfferListView
       offers={offers}
       onItemClick={showDetails}
       hasMore={hasMore}
       loadMore={loadMore}
-      scrollTop={scrollTop}
+      initScrollPosition={
+        history.location.state && history.location.state.scrollPosition
+      }
     />
   );
 };

@@ -2,36 +2,31 @@ import config from 'config';
 import { Offer, OfferId } from 'core/models';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { createAsyncAction } from 'typesafe-actions';
 
-export const FETCH_OFFER_DETAILS = 'FETCH_OFFER_DETAILS';
-export const FETCH_OFFER_DETAILS_SUCCESS = 'FETCH_OFFER_DETAILS_SUCCESS';
-export const FETCH_OFFER_DETAILS_FAIL = 'FETCH_OFFER_DETAILS_FAIL';
-
-export const fetchOfferDetailsSuccess = (data: Offer[]) => ({
-  type: FETCH_OFFER_DETAILS_SUCCESS,
-  data,
-});
-export const fetchOfferDetailsFail = () => ({
-  type: FETCH_OFFER_DETAILS_FAIL,
-});
+export const fetchDetailsAsync = createAsyncAction(
+  'FETCH_DETAILS_REQUEST',
+  'FETCH_DETAILS_SUCCESS',
+  'FETCH_DETAILS_FAILURE'
+)<undefined, Offer, undefined>();
 
 export const fetchOfferDetails = (
   offerId: OfferId
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   return async (dispatch: ThunkDispatch<{}, {}, any>) => {
-    dispatch({ type: FETCH_OFFER_DETAILS });
+    dispatch(fetchDetailsAsync.request());
 
     try {
       const res = await fetch(`${config.url}/offers/${offerId}`);
 
       if (res.ok) {
         const data = await res.json();
-        dispatch(fetchOfferDetailsSuccess(data));
+        dispatch(fetchDetailsAsync.success(data));
       } else {
-        dispatch(fetchOfferDetailsFail());
+        dispatch(fetchDetailsAsync.failure());
       }
     } catch {
-      dispatch(fetchOfferDetailsFail());
+      dispatch(fetchDetailsAsync.failure());
     }
   };
 };

@@ -1,36 +1,33 @@
 import config from 'config';
 import { Offer } from 'core/models';
-import { AnyAction } from 'redux';
+import { AnyAction, Reducer } from 'redux';
 
 import {
   FETCH_MORE_OFFERS,
   FETCH_MORE_OFFERS_FAIL,
   FETCH_MORE_OFFERS_SUCCESS,
-  SAVE_OFFER_LIST_SCROLL,
 } from './actions';
 
 export interface OfferListState {
   loading: boolean;
   hasMore: boolean;
-  offset: number;
+  nextOffset: number;
   limit: number;
   data: Offer[];
-  scrollTop: number;
 }
 
 export const initState: OfferListState = {
   loading: false,
   hasMore: true,
-  offset: 0,
+  nextOffset: 0,
   limit: config.perPage,
   data: [],
-  scrollTop: 0,
 };
 
-export default function offerListReducer(
+const offerListReducer: Reducer<OfferListState, AnyAction> = (
   state: OfferListState | undefined,
   action: AnyAction
-) {
+) => {
   if (state === undefined) {
     return initState;
   }
@@ -49,18 +46,15 @@ export default function offerListReducer(
     case FETCH_MORE_OFFERS_SUCCESS:
       return {
         ...state,
-        offset: action.offset,
+        nextOffset: action.offset,
         limit: action.limit,
         hasMore: action.hasMore,
-        data: state.data.concat(action.data),
+        data: [...state.data, ...action.data],
         loading: false,
-      };
-    case SAVE_OFFER_LIST_SCROLL:
-      return {
-        ...state,
-        scrollTop: action.scrollTop,
       };
     default:
       return state;
   }
-}
+};
+
+export default offerListReducer;

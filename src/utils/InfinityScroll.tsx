@@ -1,4 +1,17 @@
-import * as React from 'react';
+import React, { useEffect, useRef } from 'react';
+
+const getParent = (ref: React.RefObject<HTMLDivElement>) =>
+  ref.current && ref.current.parentElement;
+
+const fillView = (
+  parent: HTMLElement | null,
+  hasMore: boolean,
+  loadMore: LoadMoreFunc
+) => {
+  if (parent && hasMore && parent.clientHeight === parent.scrollHeight) {
+    loadMore();
+  }
+};
 
 type LoadMoreFunc = () => void;
 
@@ -7,16 +20,14 @@ export interface InfinityScrollProps {
   hasMore: boolean;
 }
 
-export const InfinityScroll: React.FC<InfinityScrollProps> = (
-  props: React.PropsWithChildren<InfinityScrollProps>
-) => {
-  const wrapperRef = React.useRef<HTMLDivElement>(null);
-  const { hasMore, loadMore } = props;
+export const InfinityScroll: React.FC<InfinityScrollProps> = ({
+  hasMore,
+  loadMore,
+  children,
+}: React.PropsWithChildren<InfinityScrollProps>) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    const getParent = (ref: React.RefObject<HTMLDivElement>) =>
-      ref.current && ref.current.parentElement;
-
+  useEffect(() => {
     const scrollHandler = (e: Event) => {
       const wrapper = e.target as HTMLDivElement;
 
@@ -29,30 +40,23 @@ export const InfinityScroll: React.FC<InfinityScrollProps> = (
       }
     };
 
-    const fillView = (
-      parent: HTMLElement | null,
-      hasMore: boolean,
-      loadMore: LoadMoreFunc
-    ) => {
-      if (parent && hasMore && parent.clientHeight === parent.scrollHeight) {
-        loadMore();
-      }
-    };
-
     const parent = getParent(wrapperRef);
-    if (!parent) {
-      return;
-    }
 
-    parent.addEventListener('scroll', scrollHandler);
-    fillView(parent, hasMore, loadMore);
+    parent && parent.addEventListener('scroll', scrollHandler);
 
     return () => {
       if (parent) {
         parent.removeEventListener('scroll', scrollHandler);
       }
     };
-  }, [wrapperRef, loadMore, hasMore]);
+  }, [loadMore]);
 
-  return <div ref={wrapperRef}>{props.children}</div>;
+  useEffect(() => {
+    const parent = getParent(wrapperRef);
+    if (parent) {
+      fillView(parent, hasMore, loadMore);
+    }
+  }, [children, hasMore, loadMore]);
+
+  return <div ref={wrapperRef}>{children}</div>;
 };

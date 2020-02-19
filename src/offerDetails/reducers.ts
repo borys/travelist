@@ -1,11 +1,8 @@
 import { Offer } from 'core/models';
-import { AnyAction } from 'redux';
+import { AnyAction, Reducer } from 'redux';
+import { getType } from 'typesafe-actions';
 
-import {
-  FETCH_OFFER_DETAILS,
-  FETCH_OFFER_DETAILS_FAIL,
-  FETCH_OFFER_DETAILS_SUCCESS,
-} from './actions';
+import { fetchDetailsAsync } from './actions';
 
 export interface OfferDetailsState {
   loading: boolean;
@@ -17,32 +14,34 @@ export const initState: OfferDetailsState = {
   data: null,
 };
 
-export default function offerDetailsReducer(
+const offerDetailsReducer: Reducer<OfferDetailsState, AnyAction> = (
   state: OfferDetailsState | undefined,
   action: AnyAction
-) {
+) => {
   if (state === undefined) {
     return initState;
   }
 
   switch (action.type) {
-    case FETCH_OFFER_DETAILS:
+    case getType(fetchDetailsAsync.request):
       return {
         ...state,
         loading: true,
       };
-    case FETCH_OFFER_DETAILS_FAIL:
+    case getType(fetchDetailsAsync.failure):
       return {
         ...state,
         loading: false,
       };
-    case FETCH_OFFER_DETAILS_SUCCESS:
+    case getType(fetchDetailsAsync.success):
       return {
         ...state,
-        data: action.data,
+        data: action.payload,
         loading: false,
       };
     default:
       return state;
   }
-}
+};
+
+export default offerDetailsReducer;

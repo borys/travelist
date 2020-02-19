@@ -9,7 +9,7 @@ export interface OfferListViewProps {
   loadMore: () => void;
   hasMore: boolean;
   onItemClick: (id: OfferId, position: number) => void;
-  scrollTop: number;
+  initScrollPosition: number | null;
 }
 
 export const OfferListView: React.FC<OfferListViewProps> = ({
@@ -17,17 +17,19 @@ export const OfferListView: React.FC<OfferListViewProps> = ({
   loadMore,
   hasMore,
   onItemClick,
-  scrollTop,
+  initScrollPosition,
 }: React.PropsWithChildren<OfferListViewProps>) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const getScrollTop = () =>
     wrapperRef.current ? wrapperRef.current.scrollTop : 0;
 
   useEffect(() => {
-    wrapperRef.current &&
+    initScrollPosition &&
+      wrapperRef.current &&
       wrapperRef.current.scrollTo &&
-      wrapperRef.current.scrollTo(0, scrollTop);
-  });
+      wrapperRef.current.scrollTo(0, initScrollPosition);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Wrapper ref={wrapperRef}>
@@ -36,6 +38,7 @@ export const OfferListView: React.FC<OfferListViewProps> = ({
           return (
             <Item key={id} onClick={() => onItemClick(id, getScrollTop())}>
               <Image src={img_url} alt='offer' />
+              {/* <Image src={''} alt='offer' /> */}
               <Title>{title}</Title>
               <Description>{description}</Description>
               <Price>{price}</Price>
@@ -46,3 +49,5 @@ export const OfferListView: React.FC<OfferListViewProps> = ({
     </Wrapper>
   );
 };
+
+export const MemoizedOfferListView = React.memo(OfferListView);

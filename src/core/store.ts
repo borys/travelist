@@ -1,4 +1,3 @@
-import { AppStore } from 'core/store';
 import { OfferListState } from 'offerList/reducers';
 import offerListReducer, {
   initState as offerListInitState,

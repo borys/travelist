@@ -1,74 +1,24 @@
 {
-  "name": "infiniteScroll",
+  "name": "infinity-list",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@types/enzyme": "^3.10.3",
-    "@types/jest": "24.0.18",
-    "@types/node": "12.7.12",
-    "@types/react": "16.9.5",
-    "@types/react-dom": "16.9.1",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-redux": "^7.1.1",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
-    "redux": "^4.0.4",
-    "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0",
-    "styled-components": "^4.4.0",
-    "typesafe-actions": "^4.4.2",
-    "typescript": "3.6.4"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "mock-api": "prism mock -d data.yaml"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "next": "15.0.3"
   },
   "devDependencies": {
-    "@types/enzyme-adapter-react-16": "^1.0.5",
-    "@types/fetch-mock": "^7.3.1",
-    "@types/react-redux": "^7.1.4",
-    "@types/react-router-dom": "^5.1.0",
-    "@types/redux": "^3.6.0",
-    "@types/redux-mock-store": "^1.0.1",
-    "@types/redux-thunk": "^2.1.0",
-    "@types/styled-components": "^4.1.19",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.15.1",
-    "enzyme-to-json": "^3.4.2",
-    "fetch-mock": "^7.5.1",
-    "import-sort-style-module": "^6.0.0",
-    "node-fetch": "^3.1.1",
-    "prettier": "^1.18.2",
-    "prettier-plugin-import-sort": "0.0.3",
-    "redux-mock-store": "^1.5.3"
-  },
-  "importSort": {
-    ".js, .jsx, .ts, .tsx": {
-      "style": "module"
-    }
-  },
-  "jest": {
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.3"
   }
 }

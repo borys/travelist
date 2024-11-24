@@ -3,7 +3,7 @@ import { useRef, UIEvent } from "react";
 export const useReachedBottomScroll = (
   callback: () => void,
 ) => {
-  const errorMargin = 5;
+  const errorMargin = 1;
   const scrollBottomState = useRef({
     isFirstCall: true,
     lastScrollHeight: -1
@@ -20,13 +20,13 @@ export const useReachedBottomScroll = (
     }
 
     if(!scrollBottomState.current.isFirstCall
-      && scrollBottomState.current.lastScrollHeight === scrollableView?.clientHeight
+      && scrollBottomState.current.lastScrollHeight === scrollableView?.scrollHeight
     ) {
       return;
     }
 
     scrollBottomState.current.isFirstCall = false;
-    scrollBottomState.current.lastScrollHeight = scrollableView?.clientHeight;
+    scrollBottomState.current.lastScrollHeight = scrollableView?.scrollHeight;
 
     callback();
   };

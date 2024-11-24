@@ -11,11 +11,15 @@ import {
 } from "./_components/styled";
 import { useReachedBottomScroll } from "./_hooks/useReachedScrollBottom";
 import { useGetOfferListQuery } from "./_hooks/useGetOfferListQuery";
+import { useDispatch } from "react-redux";
+import { fetchOffers } from "./_store/actions";
+import { AppDispatch } from "../store";
 
 export const OfferList: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const { data: offers } = useGetOfferListQuery({offset: 0, limit: 50});
   const { scrollHandler }  = useReachedBottomScroll(() => {
-    console.log('Bottom');
+    dispatch(fetchOffers({offset: offers.length, limit: 20}));
   });
 
   return (

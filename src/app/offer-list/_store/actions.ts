@@ -12,7 +12,7 @@ export const fetchOffers = createAsyncThunk<Offer[], FetchOffersPage>(
   'offerList/fetchOffers',
   async ({offset, limit}, { rejectWithValue }) => {
     const response = await fetch(
-      `${config.url}/offers?status=published&offset=${offset}&limit=${limit}`
+      `${config.url}/offers?_start=${offset}&_limit=${limit}`
     );
     const data = await response.json()
     if (response.status < 200 || response.status >= 300) {

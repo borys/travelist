@@ -1,5 +1,5 @@
 const config = {
-  url: 'http://127.0.0.1:4010',
+  url: 'http://localhost:4010',
   perPage: 20,
 }
 

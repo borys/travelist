@@ -7,19 +7,19 @@ import {
   Image,
   Price,
   Title,
-  ScrollableContainer,
+  ScrollableView,
 } from "./_components/styled";
 import { useReachedBottomScroll } from "./_hooks/useReachedScrollBottom";
 import { useGetOfferListQuery } from "./_hooks/useGetOfferListQuery";
 
 export const OfferList: React.FC = () => {
-  const { data: offers } = useGetOfferListQuery({offset: 0, limit: 10});
-  const {scrollableRef} =  useReachedBottomScroll(() => {
-    console.log('load more');
+  const { data: offers } = useGetOfferListQuery({offset: 0, limit: 50});
+  const { scrollHandler }  = useReachedBottomScroll(() => {
+    console.log('Bottom');
   });
 
   return (
-    <ScrollableContainer ref={scrollableRef}>
+    <ScrollableView onScroll={scrollHandler}>
       {offers.map(({ id, img_url, title, price, description }) => (
         <Item key={id}>
           <Image src={img_url} alt="offer" />
@@ -28,7 +28,7 @@ export const OfferList: React.FC = () => {
           <Price>{price}</Price>
         </Item>
       ))}
-    </ScrollableContainer>
+    </ScrollableView>
   );
 };
 

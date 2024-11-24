@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, PropsWithChildren, FC } from "react";
 
 import { Offer, OfferId } from "@/app/_models/Offer";
-import { Description, Image, Item, Price, Title, ScrollableContainer } from "./styled";
+import { Description, Image, Item, Price, Title, ScrollableView } from "./styled";
 
 export interface OfferListViewProps {
   offers: Offer[];
@@ -25,7 +25,7 @@ export const OfferListView: FC<OfferListViewProps> = ({
   }, [initScrollPosition]);
 
   return (
-    <ScrollableContainer ref={wrapperRef}>
+    <ScrollableView ref={wrapperRef}>
       {offers.map(({ id, img_url, title, price, description }) => (
           <Item key={id} onClick={() => onItemClick(id, getScrollTop())}>
             <Image src={img_url} alt="offer" />
@@ -35,6 +35,6 @@ export const OfferListView: FC<OfferListViewProps> = ({
           </Item>
         ))
       }
-    </ScrollableContainer>
+    </ScrollableView>
   );
 };

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "mock-api": "prism mock data.yaml"
+    "mock-api": "prism mock resource/api.yaml",
+    "mock-api-json": "json-server -p 4010 resource/MOCK_DATA.json"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
@@ -25,6 +26,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
+    "json-server": "1.0.0-beta.3",
     "typescript": "^5"
   },
   "packageManager": "pnpm@9.14.2+sha512.6e2baf77d06b9362294152c851c4f278ede37ab1eba3a55fda317a4a17b209f4dbb973fb250a77abc463a341fcb1f17f17cfa24091c4eb319cda0d9b84278387"

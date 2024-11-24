@@ -1,41 +1,35 @@
-import { useEffect, useRef } from "react";
+import { useRef, UIEvent } from "react";
 
 export const useReachedBottomScroll = (
   callback: () => void,
 ) => {
-  const scrollableRef = useRef<HTMLDivElement | null>(null);
+  const errorMargin = 5;
+  const scrollBottomState = useRef({
+    isFirstCall: true,
+    lastScrollHeight: -1
+  });
 
-  useEffect(() => {
-    let lastScrollHeight = scrollableRef.current?.scrollHeight;
-    let isFirstCall = true;
+  const scrollHandler = (e: UIEvent<HTMLDivElement>) => {
+    const scrollableView = e.target as HTMLDivElement;
+    const scrollLeftToView =
+      scrollableView?.scrollHeight - scrollableView?.scrollTop;
+    const viewHeight = scrollableView?.clientHeight;
 
-    const scrollHandler = (e: Event) => {
-      const scrollContainer = e.target as HTMLDivElement;
-      const scrollLeftToView =
-        scrollContainer?.scrollHeight - scrollContainer?.scrollTop;
-      const viewHeight = scrollContainer?.clientHeight;
+    if (scrollLeftToView - errorMargin  > viewHeight) {
+      return;
+    }
 
-      if (scrollLeftToView > viewHeight) {
-        return;
-      }
+    if(!scrollBottomState.current.isFirstCall
+      && scrollBottomState.current.lastScrollHeight === scrollableView?.clientHeight
+    ) {
+      return;
+    }
 
-      if(!isFirstCall && lastScrollHeight === scrollContainer?.clientHeight) {
-        return;
-      }
-      
-      isFirstCall = false;
-      lastScrollHeight = scrollContainer?.clientHeight;
+    scrollBottomState.current.isFirstCall = false;
+    scrollBottomState.current.lastScrollHeight = scrollableView?.clientHeight;
 
-      callback();
-    };
+    callback();
+  };
 
-    const scrollableElement = scrollableRef.current;
-    scrollableElement?.addEventListener("scroll", scrollHandler);
-
-    return () => {
-      scrollableElement?.removeEventListener("scroll", scrollHandler);
-    };
-  }, [callback]);
-
-  return {scrollableRef}
+  return {scrollHandler}
 };

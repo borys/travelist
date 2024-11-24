@@ -3,7 +3,7 @@ import { ShallowWrapper, shallow } from 'enzyme';
 import React from 'react';
 
 import { OfferListView } from './OfferListView';
-import { Description, Image, Item, Title, ScrollableContainer } from './styled';
+import { Description, Image, Item, Title, ScrollableView } from './styled';
 
 describe('OfferListView', () => {
   let component: ShallowWrapper;

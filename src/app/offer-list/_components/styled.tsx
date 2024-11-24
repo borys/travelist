@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ScrollableContainer = styled.div`
+export const ScrollableView = styled.div`
   width: 100%;
   max-height: 90vh;
   min-height: 90vh;
@@ -37,6 +37,9 @@ export const Title = styled.div`
   font-weight: border;
   font-size: 1.2rem;
   grid-area: title;
+  max-height: 1.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Description = styled.div`

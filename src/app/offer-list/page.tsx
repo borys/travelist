@@ -10,7 +10,6 @@ import {
   PhotoPlaceholder,
   Wrapper,
 } from "./_components/styled";
-import { useReachedBottomScroll } from "./_hooks/useReachedScrollBottom";
 import { useGetOfferListQuery } from "./_hooks/useGetOfferListQuery";
 import { useDispatch } from "react-redux";
 import { fetchOffers } from "./_store/actions";
@@ -18,11 +17,28 @@ import { AppDispatch } from "../store";
 import Image from 'next/image';
 
 
+const scrollHandlerFactory = (callback:  () => void) => (e: React.UIEvent<HTMLDivElement>) => {
+  const errorMargin = 1;
+  const scrollableView = e.target as HTMLDivElement;
+  const scrollHeight = scrollableView.scrollHeight;
+  const scrollTop = scrollableView.scrollTop;
+  const viewHeight = scrollableView.clientHeight;
+
+  if (!(Math.abs(scrollHeight - scrollTop - viewHeight) <= errorMargin)) {
+    return;
+  }
+
+  callback();
+};
+
 export const OfferList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data: offers } = useGetOfferListQuery({offset: 0, limit: 50});
-  const { scrollHandler }  = useReachedBottomScroll(() => {
-    dispatch(fetchOffers({offset: offers.length, limit: 20}));
+  const { data: offers, isLoading } = useGetOfferListQuery({offset: 0, limit: 50});
+
+  const scrollHandler  = scrollHandlerFactory(() => {
+    if (!isLoading) {
+      dispatch(fetchOffers({offset: offers.length, limit: 20}));
+    }
   });
 
   return (

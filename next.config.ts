@@ -4,6 +4,16 @@ const nextConfig: NextConfig = {
   /* config options here */
   compiler: {
     styledComponents: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'robohash.org',
+        port: '',
+        pathname: "/**"
+      }
+    ],
   }
 };
 

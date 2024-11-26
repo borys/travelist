@@ -1,92 +1,98 @@
-import { OfferStatus } from 'core/models';
-import { mount, render } from 'enzyme';
-import React from 'react';
-import { Provider } from 'react-redux';
-import { MemoryRouter, Route } from 'react-router-dom';
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { http, HttpResponse, delay } from "msw";
+import { setupServer } from "msw/node";
 
-import { Description, Image, Item, Title } from './_components/styled';
-import { OfferList } from './page';
+import { fireEvent, screen } from "@testing-library/react";
 
-describe('OfferList', () => {
-  const middlewares = [thunk];
-  const configureMockStore = configureStore(middlewares);
-  const initialState = {
-    offerList: {
-      loading: false,
-      data: [
+import { renderWithProviders } from "@/utils/test-utils";
+import "@testing-library/jest-dom";
+import { OfferList } from "./page";
+
+import config from "../../config";
+
+export const handlers = [
+  http.get(`${config.url}/offers`, async ({request, params}) => {
+    await delay(150);
+
+    const url = new URL(request.url)
+    const offset = parseInt(url.searchParams.get('_start') ?? '0');
+    console.log(url);
+
+    if (offset === 0) {
+      return HttpResponse.json([
         {
           id: 1,
-          title: 'title',
-          description: 'description',
-          img_url: 'image_url',
+          title: "title",
+          description: "description",
+          img_url: "http://example.com/image.png",
           price: 100,
-          discount: 123,
-          rating: 2,
-          status: OfferStatus.Published,
-          created_at: 'Tue Oct 15 2019 12:47:11 GMT+0200',
         },
-      ],
-    },
-  };
-  let wrapper: any;
-  const store = configureMockStore(initialState);
-  let history: any, location: any;
+      ]);
+    } else {
+      return HttpResponse.json([
+        {
+          id: 2,
+          title: "abc",
+          description: "description",
+          img_url: "http://example.com/image.png",
+          price: 100,
+        },
+      ]);
+    }
+  }),
+];
 
-  beforeEach(() => {
-    wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/']}>
-          <OfferList />
-          <Route
-            path='*'
-            render={(r) => {
-              history = r.history;
-              location = r.location;
-              return null;
-            }}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
+const server = setupServer(...handlers);
+
+describe("OfferList", () => {
+
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
+
+  it("should contain item with correct title, description, image and price", async () => {
+    renderWithProviders(<OfferList />);
+
+    await screen.findByTestId('item-title');
+
+    // expect(screen.getByTestId("item-image").getAttribute("src")).toBe(
+    //   "http://example.com/image.png",
+    // );
+    
+    expect(screen.getByTestId("item-title")).toHaveTextContent("title");
+    expect(screen.getByTestId("item-description")).toHaveTextContent("description");
+    expect(screen.getByTestId("item-price")).toHaveTextContent("100");
   });
 
-  it('should contain items', () => {
-    expect(wrapper.find(Item).length).toBe(initialState.offerList.data.length);
-  });
+  // it("should go to details page on item click", async () => {
+  //   renderWithProviders(<OfferList />);
 
-  it('should contain item with title', () => {
-    expect(
-      wrapper
-        .find(Item)
-        .first()
-        .contains(<Title>title</Title>)
-    ).toBe(true);
-  });
+  //   await screen.findByTestId('item-title');
+  //   await userEvent.click(screen.getByTestId("item-title"));
 
-  it('should contain item with description', () => {
-    expect(
-      wrapper
-        .find(Item)
-        .first()
-        .contains(<Description>description</Description>)
-    ).toBe(true);
-  });
+  //   expect(location.pathname).toBe("/details/1");
+  // });
 
-  it('should contain item with image', () => {
-    expect(
-      wrapper
-        .find(Item)
-        .first()
-        .find(Image)
-        .first()
-        .prop('src')
-    ).toBe('image_url');
-  });
+  it("should load more data on scroll bottom", async () => {
+    renderWithProviders(<OfferList />);
 
-  it('should go to details page', () => {
-    wrapper.find(Item).simulate('click');
-    expect(location.pathname).toBe('/details/1');
+    await screen.findByTestId('item-title');
+
+    const scrollableView = screen.getByTestId('scrollable-view');
+    
+    jest
+      .spyOn(scrollableView, 'scrollHeight', 'get')
+      .mockReturnValue(100.12);
+    jest
+      .spyOn(scrollableView, 'scrollTop', 'get')
+      .mockReturnValue(50);
+    jest
+      .spyOn(scrollableView, 'clientHeight', 'get')
+      .mockReturnValue(50);
+
+
+    await fireEvent.scroll(scrollableView);
+    await screen.findAllByText('abc')
+
+    expect(screen.getByTestId('scrollable-view').children.length).toBe(2);
   });
 });

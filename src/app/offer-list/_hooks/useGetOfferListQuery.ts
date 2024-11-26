@@ -19,11 +19,9 @@ export function useGetOfferListQuery(range: UseGetOfferList) {
     selectData(state),
   );
 
-  useEffect(() => {
-    if (status === undefined) {
-      dispatch(fetchOffers(range));
-    }
-  }, [dispatch, range, status]);
+  if (status === undefined) {
+    dispatch(fetchOffers(range));
+  }
 
   const isUninitialized = status === undefined;
   const isLoading = status === 'pending' || status === undefined;

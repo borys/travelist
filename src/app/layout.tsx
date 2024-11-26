@@ -1,6 +1,4 @@
 'use client'
-// import type { Metadata } from "next";
-
 import { Provider } from "react-redux";
 import { store } from "./store";
 
@@ -11,6 +9,8 @@ const Layout = styled.div`
   max-width: 800px;
   margin: auto;
 `;
+
+// import type { Metadata } from "next";
 
 // export const metadata: Metadata = {
 //   title: "Create Next App",

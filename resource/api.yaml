@@ -1,0 +1,169 @@
+openapi: 3.0.0
+info:
+  title: 'Sample Offer API'
+  version: '1.0'
+
+servers:
+  - url: '/v1'
+
+tags:
+  - name: 'offer'
+    description: 'Offers operations'
+
+components:
+  schemas:
+    Offer:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - img_url
+        - price
+        - status
+        - created_at
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          maxLength: 255
+          x-faker: lorem.words
+        description:
+          type: string
+          maxLength: 1024
+          x-faker: lorem.paragraph
+        img_url:
+          type: string
+          maxLength: 1024
+          x-faker:
+            image.city:
+              - 320
+              - 240
+              - true
+        price:
+          type: integer
+          format: 'int32'
+          minimum: 1
+          maximum: 1000
+        discount:
+          type: integer
+          format: 'int32'
+          minimum: 1
+          maximum: 99
+        rating:
+          type: integer
+          format: 'int32'
+          minimum: 1
+          maximum: 5
+        status:
+          type: string
+          enum: &offerStatusEnum
+            - 'published'
+            - 'in_progress'
+            - 'waiting_for_approval'
+            - 'canceled'
+        created_at:
+          type: string
+          format: date-time
+          x-faker: date.past
+
+paths:
+  /offers:
+    get:
+      summary: 'Get list of all offers'
+      tags:
+        - 'offer'
+      security:
+        - oath:
+            - 'read:offer'
+      parameters:
+        - in: 'query'
+          name: 'limit'
+          schema:
+            type: 'integer'
+            minimum: 1
+            default: 20
+            maximum: 50
+        - in: 'query'
+          name: 'offset'
+          schema:
+            type: 'integer'
+            minimum: 0
+        - in: 'query'
+          name: 'sort'
+          schema:
+            type: 'string'
+            default: 'id'
+            enum:
+              - 'id'
+              - '-id'
+              - 'title'
+              - '-title'
+              - 'price'
+              - '-price'
+              - 'discount'
+              - '-discount'
+        - in: 'query'
+          name: 'title'
+          schema:
+            type: 'string'
+            description: 'Filter for query by title'
+        - in: 'query'
+          name: 'status'
+          schema:
+            description: 'Filter for query by status'
+            type: 'string'
+            enum: *offerStatusEnum
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'array'
+                items:
+                  $ref: '#/components/schemas/Offer'
+                maxItems: 100
+                minItems: 100
+          headers:
+            X-Limit:
+              schema:
+                type: 'integer'
+                minimum: 1
+                maximum: 20
+              description: 'Limit of results used in query'
+            X-Offset:
+              schema:
+                type: 'integer'
+                minimum: 0
+                maximum: 100
+              description: 'Offset of results used in query'
+            X-Total-Count:
+              schema:
+                type: 'integer'
+                minimum: 1000
+                maximum: 1000
+              description: 'Total records'
+
+  /offers/{offer_id}:
+    get:
+      summary: 'Get offer data in json format'
+      tags:
+        - 'offer'
+      parameters:
+        - in: 'path'
+          name: 'offer_id'
+          schema:
+            type: 'integer'
+          required: true
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        404:
+          description: 'Not found'

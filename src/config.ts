@@ -1,4 +1,6 @@
-export default {
-  url: 'http://127.0.0.1:4010',
+const config = {
+  url: "http://localhost:4010",
   perPage: 20,
 };
+
+export default config;

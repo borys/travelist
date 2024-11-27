@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { offerDetailsSlice } from './offer-details/[offerId]/_store/reducers'
-import { offerListSlice } from './offer-list/_store/reducers'
+import { offerListSlice } from './_store/reducers'
 
 const rootReducer = combineReducers({
   offerDetails: offerDetailsSlice.reducer,

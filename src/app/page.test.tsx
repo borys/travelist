@@ -1,21 +1,19 @@
+import "@testing-library/jest-dom";
 import { http, HttpResponse, delay } from "msw";
 import { setupServer } from "msw/node";
 
 import { fireEvent, screen } from "@testing-library/react";
-
 import { renderWithProviders } from "@/utils/test-utils";
-import "@testing-library/jest-dom";
 import { OfferList } from "./page";
 
-import config from "../../config";
+import config from "../config";
 
 export const handlers = [
-  http.get(`${config.url}/offers`, async ({request, params}) => {
+  http.get(`${config.url}/offers`, async ({request}) => {
     await delay(150);
 
     const url = new URL(request.url)
     const offset = parseInt(url.searchParams.get('_start') ?? '0');
-    console.log(url);
 
     if (offset === 0) {
       return HttpResponse.json([
@@ -31,7 +29,7 @@ export const handlers = [
       return HttpResponse.json([
         {
           id: 2,
-          title: "abc",
+          title: "next page",
           description: "description",
           img_url: "http://example.com/image.png",
           price: 100,
@@ -44,7 +42,6 @@ export const handlers = [
 const server = setupServer(...handlers);
 
 describe("OfferList", () => {
-
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
@@ -54,23 +51,10 @@ describe("OfferList", () => {
 
     await screen.findByTestId('item-title');
 
-    // expect(screen.getByTestId("item-image").getAttribute("src")).toBe(
-    //   "http://example.com/image.png",
-    // );
-    
     expect(screen.getByTestId("item-title")).toHaveTextContent("title");
     expect(screen.getByTestId("item-description")).toHaveTextContent("description");
     expect(screen.getByTestId("item-price")).toHaveTextContent("100");
   });
-
-  // it("should go to details page on item click", async () => {
-  //   renderWithProviders(<OfferList />);
-
-  //   await screen.findByTestId('item-title');
-  //   await userEvent.click(screen.getByTestId("item-title"));
-
-  //   expect(location.pathname).toBe("/details/1");
-  // });
 
   it("should load more data on scroll bottom", async () => {
     renderWithProviders(<OfferList />);
@@ -91,7 +75,7 @@ describe("OfferList", () => {
 
 
     await fireEvent.scroll(scrollableView);
-    await screen.findAllByText('abc')
+    await screen.findByText('next page')
 
     expect(screen.getByTestId('scrollable-view').children.length).toBe(2);
   });

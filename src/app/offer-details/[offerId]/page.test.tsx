@@ -1,69 +1,50 @@
-import { OfferStatus } from 'core/models';
-import { mount } from 'enzyme';
-import React from 'react';
-import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { http, HttpResponse, delay } from "msw";
+import { setupServer } from "msw/node";
+import { screen } from "@testing-library/react";
 
-import { Description, Image, Price, Title } from './_components/styled';
-import { Details } from './page';
+import config from "@/config";
+import Details from "./page";
+import { renderWithProviders } from "@/utils/test-utils";
 
-describe('Details', () => {
-  const middlewares = [thunk];
-  const configureMockStore = configureStore(middlewares);
-  const initialState = {
-    offerDetails: {
-      loading: false,
-      data: {
-        id: 1,
-        title: 'title',
-        description: 'description',
-        img_url: 'image_url',
-        price: 100,
-        discount: 123,
-        rating: 2,
-        status: OfferStatus.Published,
-        created_at: 'Tue Oct 15 2019 12:47:11 GMT+0200',
-      },
-    },
-  };
-  let wrapper: any;
-  const store = configureMockStore(initialState);
+import nav from "next/navigation";
 
-  beforeEach(() => {
-    wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/details/1']}>
-          <Details />
-        </MemoryRouter>
-      </Provider>
-    );
-  });
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(),
+  useParams: jest.fn(),
+}));
 
-  it('should has title', () => {
-    expect(wrapper.contains(<Title>title</Title>)).toBe(true);
-  });
+const useParams = nav.useParams as jest.MockedFunction<typeof nav.useParams>;
 
-  it('should has description', () => {
-    expect(wrapper.contains(<Description>description</Description>)).toBe(true);
-  });
+export const handlers = [
+  http.get(`${config.url}/offers/:id`, async ({params}) => {
+    await delay(150);
 
-  it('should render price', () => {
-    expect(
-      wrapper
-        .find(Price)
-        .first()
-        .text()
-    ).toContain('100');
-  });
+    return HttpResponse.json({
+      id: params.id,
+      title: "title",
+      description: "description",
+      img_url: "http://example.com/image.png",
+      price: 100,
+    });
+  }),
+];
 
-  it('should render image', () => {
-    expect(
-      wrapper
-        .find(Image)
-        .first()
-        .prop('src')
-    ).toBe('image_url');
+const server = setupServer(...handlers);
+
+describe("Details", () => {
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
+
+  it("should has title, description and render price", async () => {
+    useParams.mockReturnValue({ offerId: "1" });
+
+    renderWithProviders(<Details />);
+
+    await screen.findByTestId('title');
+
+    expect(screen.getByTestId("title")).toHaveTextContent("title");
+    expect(screen.getByTestId("description")).toHaveTextContent("description");
+    expect(screen.getByTestId("price")).toHaveTextContent("100");
   });
 });

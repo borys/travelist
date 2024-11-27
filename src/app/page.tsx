@@ -10,7 +10,7 @@ import {
   Avatar,
   Wrapper,
 } from "./_components/styled";
-import { useGetOfferListQuery } from "./_hooks/useGetOfferListQuery";
+import { useGetOfferListQuery } from "./_hooks/use-get-offer-list-query";
 import { useDispatch } from "react-redux";
 import { fetchOffers } from "./_store/actions";
 import { AppDispatch } from "./store";

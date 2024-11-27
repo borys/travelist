@@ -1,4 +1,4 @@
-import { Offer } from "@/app/_models/Offer";
+import { Offer } from "@/app/_models/offer";
 import config from "@/config";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 

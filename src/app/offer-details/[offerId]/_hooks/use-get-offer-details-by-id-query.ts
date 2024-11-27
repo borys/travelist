@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectDataById, selectStatusById } from "../_store/reducers";
-import { OfferId } from "@/app/_models/Offer";
+import { OfferId } from "@/app/_models/offer";
 import { AppDispatch, RootState } from "@/app/store";
 import { useEffect } from "react";
 import { fetchDetailsById } from "../_store/actions";

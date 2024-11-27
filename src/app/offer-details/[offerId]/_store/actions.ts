@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import config from "@/config";
-import { Offer, OfferId } from "@/app/_models/Offer";
+import { Offer, OfferId } from "@/app/_models/offer";
 
 export const fetchDetailsById = createAsyncThunk<Offer, OfferId>(
   "offerDetails/fetchDetailsById",

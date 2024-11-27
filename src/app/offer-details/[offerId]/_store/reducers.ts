@@ -1,4 +1,4 @@
-import { Offer, OfferId } from "@/app/_models/Offer";
+import { Offer, OfferId } from "@/app/_models/offer";
 
 import { fetchDetailsById } from "./actions";
 import { createSlice } from "@reduxjs/toolkit";

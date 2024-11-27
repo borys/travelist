@@ -1,5 +1,5 @@
-import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
-import StoreProvider from "../lib/StoreProvider";
+import StyledComponentsRegistry from "@/lib/styled-components-registry";
+import StoreProvider from "../lib/store-provider";
 import "./global.css";
 
 import type { Metadata } from "next";

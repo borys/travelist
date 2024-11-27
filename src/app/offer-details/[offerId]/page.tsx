@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { useGetOfferDetailsByIdQuery } from "./_hooks/useGetOfferDetailsByIdQuery";
+import { useGetOfferDetailsByIdQuery } from "./_hooks/use-get-offer-details-by-id-query";
 import {
   Description,
   EmptyState,

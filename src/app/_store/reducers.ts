@@ -1,4 +1,4 @@
-import { Offer } from "@/app/_models/Offer";
+import { Offer } from "@/app/_models/offer";
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchOffers } from "./actions";
 import { RootState } from "@/app/store";

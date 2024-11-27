@@ -16,7 +16,7 @@ jest.mock("next/navigation", () => ({
 const useParams = nav.useParams as jest.MockedFunction<typeof nav.useParams>;
 
 export const handlers = [
-  http.get(`${config.url}/offers/:id`, async ({params}) => {
+  http.get(`${config.url}/offers/:id`, async ({ params }) => {
     await delay(150);
 
     return HttpResponse.json({
@@ -41,7 +41,7 @@ describe("Details", () => {
 
     renderWithProviders(<Details />);
 
-    await screen.findByTestId('title');
+    await screen.findByTestId("title");
 
     expect(screen.getByTestId("title")).toHaveTextContent("title");
     expect(screen.getByTestId("description")).toHaveTextContent("description");

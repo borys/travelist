@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from 'next/image';
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useGetOfferDetailsByIdQuery } from "./_hooks/useGetOfferDetailsByIdQuery";
 import {
@@ -25,11 +25,11 @@ export const Details: React.FC = () => {
   return (
     <div>
       <button onClick={() => router.back()}>Go back</button>
-      <Title data-testid='title'>{offer.title}</Title>
+      <Title data-testid="title">{offer.title}</Title>
       <Image src={offer.img_url} alt="offer image" width={100} height={100} />
-      <Description data-testid='description'>{offer.description}</Description>
+      <Description data-testid="description">{offer.description}</Description>
       <Summary>
-        <Price  data-testid='price'>Price: {offer.price}</Price>
+        <Price data-testid="price">Price: {offer.price}</Price>
       </Summary>
     </div>
   );

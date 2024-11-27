@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import Image from 'next/image';
+import styled from "styled-components";
+import Image from "next/image";
 
 export const Wrapper = styled.div`
   border: 1px solid black;
@@ -28,8 +28,8 @@ export const Item = styled.li`
   grid-template-columns: 110px auto 100px;
   grid-template-rows: auto;
   grid-template-areas:
-    'photo title price'
-    'photo description price';
+    "photo title price"
+    "photo description price";
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.03);

@@ -59,9 +59,7 @@ export const OfferList: React.FC = () => {
                 height={75}
               />
               <Title data-testid="item-title">
-                <Link href={`offer-details/${id}`}>
-                  {title}
-                </Link>
+                <Link href={`offer-details/${id}`}>{title}</Link>
               </Title>
               <Description data-testid="item-description">
                 {description}

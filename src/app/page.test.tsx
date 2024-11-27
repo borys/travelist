@@ -9,11 +9,11 @@ import { OfferList } from "./page";
 import config from "../config";
 
 export const handlers = [
-  http.get(`${config.url}/offers`, async ({request}) => {
+  http.get(`${config.url}/offers`, async ({ request }) => {
     await delay(150);
 
-    const url = new URL(request.url)
-    const offset = parseInt(url.searchParams.get('_start') ?? '0');
+    const url = new URL(request.url);
+    const offset = parseInt(url.searchParams.get("_start") ?? "0");
 
     if (offset === 0) {
       return HttpResponse.json([
@@ -49,34 +49,29 @@ describe("OfferList", () => {
   it("should contain item with correct title, description, image and price", async () => {
     renderWithProviders(<OfferList />);
 
-    await screen.findByTestId('item-title');
+    await screen.findByTestId("item-title");
 
     expect(screen.getByTestId("item-title")).toHaveTextContent("title");
-    expect(screen.getByTestId("item-description")).toHaveTextContent("description");
+    expect(screen.getByTestId("item-description")).toHaveTextContent(
+      "description",
+    );
     expect(screen.getByTestId("item-price")).toHaveTextContent("100");
   });
 
   it("should load more data on scroll bottom", async () => {
     renderWithProviders(<OfferList />);
 
-    await screen.findByTestId('item-title');
+    await screen.findByTestId("item-title");
 
-    const scrollableView = screen.getByTestId('scrollable-view');
-    
-    jest
-      .spyOn(scrollableView, 'scrollHeight', 'get')
-      .mockReturnValue(100.12);
-    jest
-      .spyOn(scrollableView, 'scrollTop', 'get')
-      .mockReturnValue(50);
-    jest
-      .spyOn(scrollableView, 'clientHeight', 'get')
-      .mockReturnValue(50);
+    const scrollableView = screen.getByTestId("scrollable-view");
 
+    jest.spyOn(scrollableView, "scrollHeight", "get").mockReturnValue(100.12);
+    jest.spyOn(scrollableView, "scrollTop", "get").mockReturnValue(50);
+    jest.spyOn(scrollableView, "clientHeight", "get").mockReturnValue(50);
 
     await fireEvent.scroll(scrollableView);
-    await screen.findByText('next page')
+    await screen.findByText("next page");
 
-    expect(screen.getByTestId('scrollable-view').children.length).toBe(2);
+    expect(screen.getByTestId("scrollable-view").children.length).toBe(2);
   });
 });

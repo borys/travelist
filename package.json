@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "write-prettier": "prettier ./src --write",
     "test": "jest",
     "test:watch": "jest --watch",
     "mock-api": "prism mock resource/api.yaml",

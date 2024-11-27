@@ -22,9 +22,9 @@ export function useGetOfferDetailsByIdQuery(offerId: OfferId) {
   }, [dispatch, offerId, status]);
 
   const isUninitialized = status === undefined;
-  const isLoading = status === 'pending' || status === undefined;
-  const isError = status === 'rejected';
-  const isSuccess = status === 'fulfilled';
+  const isLoading = status === "pending" || status === undefined;
+  const isError = status === "rejected";
+  const isSuccess = status === "fulfilled";
 
-  return {data, isUninitialized, isLoading, isError, isSuccess}
+  return { data, isUninitialized, isLoading, isError, isSuccess };
 }

@@ -1,6 +1,6 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { offerDetailsSlice } from './offer-details/[offerId]/_store/reducers'
-import { offerListSlice } from './_store/reducers'
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { offerDetailsSlice } from "./offer-details/[offerId]/_store/reducers";
+import { offerListSlice } from "./_store/reducers";
 
 const rootReducer = combineReducers({
   offerDetails: offerDetailsSlice.reducer,
@@ -10,9 +10,9 @@ const rootReducer = combineReducers({
 export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
-    preloadedState
+    preloadedState,
   });
-}
+};
 
 export const store = setupStore();
 
@@ -20,4 +20,4 @@ export const store = setupStore();
 export type RootState = ReturnType<typeof rootReducer>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppStore = ReturnType<typeof setupStore>;
-export type AppDispatch = AppStore['dispatch'];
+export type AppDispatch = AppStore["dispatch"];
